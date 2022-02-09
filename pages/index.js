@@ -1,14 +1,13 @@
-import { MainContent, RadioInputsDiv, RadioInput, RadioLabel, FormElement, NumberInput } from "../src/styles/homepage";
+import { MainContent, RadioInputsDiv, RadioInput, RadioLabel, FormElement, InputButton, NumberInput } from "../src/styles/homepage";
 import { BsCheck, BsInfoCircle } from "react-icons/bs";
 import { useState } from "react";
 
-const Home = () => {
+const Home = ({ cdi, ipca }) => {
   const [incomeType, setIncomeType] = useState('Gross');
-  const [indexingType, setIndexingType] = useState('Post')
+  const [indexingType, setIndexingType] = useState('Post');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e);
   };
 
   return (
@@ -59,22 +58,30 @@ const Home = () => {
           </FormElement>
           <FormElement>
             <label>Aporte Inicial</label>
-            <NumberInput type="number" id="inicialContribution" min="1"/>
+            <NumberInput type="text" id="inicialContribution" min="1"/>
           </FormElement>
           <FormElement>
             <label>Aporte Mensal</label>
-            <NumberInput type="number" id="inicialContribution" min="1"/>
+            <NumberInput type="text" id="inicialContribution" min="1"/>
           </FormElement>
           <FormElement>
             <label>Prazo (em meses)</label>
-            <NumberInput type="number" id="inicialContribution" min="1"/>
+            <NumberInput type="text" id="inicialContribution" min="1"/>
           </FormElement>
           <FormElement>
             <label>Rentabilidade</label>
-            <NumberInput type="number" id="inicialContribution" min="1"/>
+            <NumberInput type="text" id="inicialContribution" min="1"/>
           </FormElement>
-          <button>Limpar campos</button>
-          <input type="submit" value="Simular"/>
+          <FormElement>
+            <label>IPCA (% ao ano)</label>
+            <NumberInput type="number" id="inicialContribution" min="1" readOnly value={ipca[0].valor} />
+          </FormElement>
+          <FormElement>
+            <label>CDI (% ao ano)</label>
+            <NumberInput type="number" id="inicialContribution" step="0.01" readOnly min="1" value={cdi[0].valor} />
+          </FormElement>
+          <InputButton type="reset" value="Limpar os campos" border="1px solid black"/>
+          <InputButton type="submit" value="Simular" color="#ed8e53" border="none"/>
         </form>
       </section>
     </MainContent>
@@ -82,3 +89,19 @@ const Home = () => {
 };
 
 export default Home;
+
+
+export async function getServerSideProps() {
+  const cdi = await fetch('http://localhost:3000/indicadores?nome=cdi');
+  const cdijson = await cdi.json();
+
+  const ipca = await fetch('http://localhost:3000/indicadores?nome=ipca');
+  const ipcajson = await ipca.json();
+
+  return {
+    props: {
+      cdi: cdijson,
+      ipca: ipcajson,
+    }
+  }
+}

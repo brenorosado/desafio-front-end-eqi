@@ -14,7 +14,7 @@ export const MainContent = styled.main`
         display: grid;
         grid-template-columns: repeat(2, 220px);
         grid-column-gap: 50px;
-        grid-row-gap: 20px;
+        grid-row-gap: 40px;
     }
 
     span {
@@ -73,4 +73,15 @@ export const NumberInput = styled.input`
     :focus {
         outline: none;
     }
+`;
+
+export const InputButton = styled.input`
+    background-color: ${props => props.color};
+    outline: none;
+    border: ${props => props.border};
+    height: 50px;
+    border-radius: 5px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
 `;
