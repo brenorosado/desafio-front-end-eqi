@@ -75,13 +75,27 @@ export const NumberInput = styled.input`
     }
 `;
 
-export const InputButton = styled.input`
+export const SubmitInput = styled.input`
     background-color: ${props => props.color};
     outline: none;
-    border: ${props => props.border};
+    border: none;
     height: 50px;
     border-radius: 5px;
     font-size: 17px;
     font-weight: bold;
     cursor: pointer;
+`;
+
+export const ResetInput = styled.input`
+    outline: none;
+    height: 50px;
+    border-radius: 5px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid black;
+`;
+
+export const NormalLabel = styled.label`
+    padding-bottom: 10px; 
 `;

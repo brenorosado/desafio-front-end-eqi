@@ -1,12 +1,15 @@
-import { MainContent, RadioInputsDiv, RadioInput, RadioLabel, FormElement, InputButton, NumberInput } from "../src/styles/homepage";
+import { MainContent, RadioInputsDiv, RadioInput, RadioLabel, FormElement, SubmitInput, ResetInput, NumberInput, NormalLabel } from "../src/styles/homepage";
 import { BsCheck, BsInfoCircle } from "react-icons/bs";
 import { useState } from "react";
+import { moneyMask, porcentageMask } from "../src/utils/inputMasks";
 
 const Home = ({ cdi, ipca }) => {
   const [incomeType, setIncomeType] = useState('Gross');
   const [indexingType, setIndexingType] = useState('Post');
+  const [submitInputColor, setSubmitInputColor] = useState("#969696");
 
   const handleSubmit = (e) => {
+    setSubmitInputColor("#ed8e53");
     e.preventDefault();
   };
 
@@ -15,7 +18,7 @@ const Home = ({ cdi, ipca }) => {
       <h1>Simulador de Investimentos</h1>
       <section>
         <h2>Simulador</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autocomplete="off">
           <FormElement>
             <span>Rendimento <BsInfoCircle /></span>
             <RadioInputsDiv>
@@ -57,31 +60,31 @@ const Home = ({ cdi, ipca }) => {
             </RadioInputsDiv>
           </FormElement>
           <FormElement>
-            <label>Aporte Inicial</label>
-            <NumberInput type="text" id="inicialContribution" min="1"/>
+            <NormalLabel>Aporte Inicial</NormalLabel>
+            <NumberInput type="text" id="initialContribution" onKeyDown={(e) => e.target.value = moneyMask(e.target.value)} />
           </FormElement>
           <FormElement>
-            <label>Aporte Mensal</label>
-            <NumberInput type="text" id="inicialContribution" min="1"/>
+            <NormalLabel>Aporte Mensal</NormalLabel>
+            <NumberInput type="text" id="monthlyContribution" onKeyDown={(e) => e.target.value = moneyMask(e.target.value)} />
           </FormElement>
           <FormElement>
-            <label>Prazo (em meses)</label>
-            <NumberInput type="text" id="inicialContribution" min="1"/>
+            <NormalLabel>Prazo (em meses)</NormalLabel>
+            <NumberInput type="number" id="deadline" min="1" />
           </FormElement>
           <FormElement>
-            <label>Rentabilidade</label>
-            <NumberInput type="text" id="inicialContribution" min="1"/>
+            <NormalLabel>Rentabilidade</NormalLabel>
+            <NumberInput type="number" step="0.01" id="profitability" min="1" />
           </FormElement>
           <FormElement>
-            <label>IPCA (% ao ano)</label>
-            <NumberInput type="number" id="inicialContribution" min="1" readOnly value={ipca[0].valor} />
+            <NormalLabel>IPCA (ao ano)</NormalLabel>
+            <NumberInput type="text" id="ipca" min="1" readOnly value={`${ipca[0].valor.toString()}%`} />
           </FormElement>
           <FormElement>
-            <label>CDI (% ao ano)</label>
-            <NumberInput type="number" id="inicialContribution" step="0.01" readOnly min="1" value={cdi[0].valor} />
+            <NormalLabel>CDI (ao ano)</NormalLabel>
+            <NumberInput type="text" id="cdi" step="0.01" readOnly min="1" value={`${cdi[0].valor.toString()}%`} />
           </FormElement>
-          <InputButton type="reset" value="Limpar os campos" border="1px solid black"/>
-          <InputButton type="submit" value="Simular" color="#ed8e53" border="none"/>
+          <ResetInput type="reset" value="Limpar os campos" />
+          <SubmitInput type="submit" value="Simular" color={submitInputColor} />
         </form>
       </section>
     </MainContent>
