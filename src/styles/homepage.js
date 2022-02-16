@@ -4,6 +4,9 @@ export const MainContent = styled.main`
     background-color: #efefef;
     width: 100%;
     padding: 30px;
+    display: flex;
+    justify-content: flex-start;
+    border: 1px solid red;
 
     h1 {
         text-align: center;

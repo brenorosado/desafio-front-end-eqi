@@ -1,17 +1,32 @@
 import { MainContent, RadioInputsDiv, RadioInput, RadioLabel, FormElement, SubmitInput, ResetInput, NumberInput, NormalLabel } from "../src/styles/homepage";
 import { BsCheck, BsInfoCircle } from "react-icons/bs";
 import { useState } from "react";
-import { moneyMask, porcentageMask } from "../src/utils/inputMasks";
+import { moneyMask } from "../src/utils/inputMasks";
+import ResultSection from "../src/components/resultSection";
+import IncomeTypeSelector from "../src/components/IncomeTypeSelector";
+import IndexingTypeSelector from "../src/components/IndexingTypeSelector";
 
 const Home = ({ cdi, ipca }) => {
-  const [incomeType, setIncomeType] = useState('Gross');
-  const [indexingType, setIndexingType] = useState('Post');
-  const [submitInputColor, setSubmitInputColor] = useState("#969696");
+  const [incomeType, setIncomeType] = useState('bruto');
+  const [indexingType, setIndexingType] = useState('pos');
+  const [submitInputColor, setSubmitInputColor] = useState('#969696');
+  const [simultationResult, setSimulationResult] = useState(null);
 
   const handleSubmit = (e) => {
     setSubmitInputColor("#ed8e53");
     e.preventDefault();
+
+    const fetchData = async () => {
+      return await fetch(`http://localhost:3000/simulacoes?tipoIndexacao=${indexingType}&tipoRendimento=${incomeType}`)
+        .then(response => response.json())
+        .then(data => setSimulationResult(data[0]))
+        .catch(console.error);
+    };
+
+    fetchData();
   };
+
+  if(simultationResult) console.log(simultationResult);
 
   return (
     <MainContent>
@@ -19,46 +34,8 @@ const Home = ({ cdi, ipca }) => {
       <section>
         <h2>Simulador</h2>
         <form onSubmit={handleSubmit} autocomplete="off">
-          <FormElement>
-            <span>Rendimento <BsInfoCircle /></span>
-            <RadioInputsDiv>
-              <RadioInput type="radio" id="grossIncome" name="incomeType" value="Gross" onChange={(e) => setIncomeType('Gross')} />
-              <RadioLabel for="grossIncome"
-                background={incomeType === 'Gross' ? '#ed8e53' : '#efefef'}
-                color={incomeType === 'Gross' ? 'white' : 'black'}>
-                {incomeType === 'Gross' ? <><BsCheck />Bruto</> : 'Bruto'}
-              </RadioLabel>
-              <RadioInput type="radio" id="liquidIncome" name="incomeType" value="Liquid" onChange={(e) => setIncomeType('Liquid')} />
-              <RadioLabel for="liquidIncome"
-                background={incomeType === 'Liquid' ? '#ed8e53' : '#efefef'}
-                color={incomeType === 'Liquid' ? 'white' : 'black'}>
-                {incomeType === 'Liquid' ? <><BsCheck />Líquido</> : 'Líquido'}
-              </RadioLabel>
-            </RadioInputsDiv>
-          </FormElement>
-          <FormElement>
-            <span>Tipos de indexação <BsInfoCircle /></span>
-            <RadioInputsDiv>
-              <RadioInput type="radio" id="preIndexing" name="indexingType" value="Pre" onChange={(e) => setIndexingType('Pre')} />
-              <RadioLabel for="preIndexing"
-                background={indexingType === 'Pre' ? '#ed8e53' : '#efefef'}
-                color={indexingType === 'Pre' ? 'white' : 'black'}>
-                {indexingType === 'Pre' ? <><BsCheck />PRÉ</> : 'PRÉ'}
-              </RadioLabel>
-              <RadioInput type="radio" id="postIncome" name="indexingType" value="Post" onChange={(e) => setIndexingType('Post')} />
-              <RadioLabel for="postIncome"
-                background={indexingType === 'Post' ? '#ed8e53' : '#efefef'}
-                color={indexingType === 'Post' ? 'white' : 'black'}>
-                {indexingType === 'Post' ? <><BsCheck />PÓS</> : 'PÓS'}
-              </RadioLabel>
-              <RadioInput type="radio" id="fixedIncome" name="indexingType" value="Fixed" onChange={(e) => setIndexingType('Fixed')} />
-              <RadioLabel for="fixedIncome"
-                background={indexingType === 'Fixed' ? '#ed8e53' : '#efefef'}
-                color={indexingType === 'Fixed' ? 'white' : 'black'}>
-                {indexingType === 'Fixed' ? <><BsCheck />FIXADO</> : 'FIXADO'}
-              </RadioLabel>
-            </RadioInputsDiv>
-          </FormElement>
+          <IncomeTypeSelector incomeType={incomeType} setIncomeType={setIncomeType} />
+          <IndexingTypeSelector indexingType={indexingType} setIndexingType={setIndexingType} />
           <FormElement>
             <NormalLabel>Aporte Inicial</NormalLabel>
             <NumberInput type="text" id="initialContribution" onKeyDown={(e) => e.target.value = moneyMask(e.target.value)} />
@@ -87,6 +64,11 @@ const Home = ({ cdi, ipca }) => {
           <SubmitInput type="submit" value="Simular" color={submitInputColor} />
         </form>
       </section>
+      {
+        simultationResult ? (
+          <ResultSection result={simultationResult}/>
+        ) : null
+      }
     </MainContent>
   );
 };
