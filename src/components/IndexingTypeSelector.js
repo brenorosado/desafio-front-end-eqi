@@ -1,4 +1,4 @@
-import { FormElement, RadioInputsDiv, RadioInput, RadioLabel } from "../styles/homepage";
+import { FormElement, RadioInputsDiv, RadioInput, RadioLabel } from "../styles/selectors";
 import { BsCheck, BsInfoCircle } from "react-icons/bs";
 
 const IndexingTypeSelector = ({ indexingType, setIndexingType }) => {

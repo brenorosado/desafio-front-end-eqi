@@ -1,39 +1,5 @@
 import styled from "styled-components";
 
-export const MainContent = styled.main`
-    background-color: #efefef;
-    width: 100%;
-    padding: 30px;
-    display: grid;
-    grid-template-columns: 30% 50%;
-    justify-content: center;
-
-    h1 {
-        text-align: center;
-        margin-bottom: 20px;
-        grid-column-start: 1;
-        grid-column-end: 3;
-    }
-
-    section {
-        padding: 20px;
-
-        form {
-            display: grid;
-            grid-template-columns: repeat(2, 220px);
-            grid-column-gap: 50px;
-            grid-row-gap: 40px;
-            width: 100%;
-        }
-
-        span {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0px;
-        }
-    }
-`;
-
 export const FormElement = styled.div`
     display: flex;
     flex-direction: column;

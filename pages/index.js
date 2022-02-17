@@ -1,5 +1,4 @@
-import { MainContent, RadioInputsDiv, RadioInput, RadioLabel, FormElement, SubmitInput, ResetInput, NumberInput, NormalLabel } from "../src/styles/homepage";
-import { BsCheck, BsInfoCircle } from "react-icons/bs";
+import { MainContent, FormElement, SubmitInput, ResetInput, NumberInput, NormalLabel } from "../src/styles/homepage";
 import { useState } from "react";
 import { moneyMask } from "../src/utils/inputMasks";
 import ResultSection from "../src/components/resultSection";
