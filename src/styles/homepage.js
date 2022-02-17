@@ -9,6 +9,7 @@ export const MainContent = styled.main`
     grid-template-columns: 100%;
     grid-template-rows: auto auto auto;
     grid-row-gap: 40px;
+    justify-content: center;
 
 
     ${media.widescreen`
