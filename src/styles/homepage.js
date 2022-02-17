@@ -1,70 +1,58 @@
 import styled from "styled-components";
+import media from "./media";
 
 export const MainContent = styled.main`
     background-color: #efefef;
     width: 100%;
-    padding: 30px;
+    padding: 20px;
     display: grid;
-    grid-template-columns: 30% 50%;
-    justify-content: center;
+    grid-template-columns: 100%;
+    grid-template-rows: auto auto auto;
+    grid-row-gap: 40px;
+
+
+    ${media.widescreen`
+        grid-template-columns: 530px 800px;
+    `}
 
     h1 {
         text-align: center;
-        margin-bottom: 20px;
-        grid-column-start: 1;
-        grid-column-end: 3;
+        ${media.widescreen`
+            grid-column-start: 1;
+            grid-column-end: 3;
+        `}
+    }
+`;
+
+export const FormSection = styled.section`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+
+    form {
+        display: grid;
+        grid-template-columns: 220px;
+        grid-row-gap: 30px;        
+        width: 100%;
+
+        ${media.tablet`
+            grid-template-columns: repeat(2, 220px);
+            grid-row-gap: 40px;  
+            grid-column-gap: 50px;
+        `}
     }
 
-    section {
-        padding: 20px;
-
-        form {
-            display: grid;
-            grid-template-columns: repeat(2, 220px);
-            grid-column-gap: 50px;
-            grid-row-gap: 40px;
-            width: 100%;
-        }
-
-        span {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0px;
-        }
+    span {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px 0px;
     }
 `;
 
 export const FormElement = styled.div`
     display: flex;
     flex-direction: column;
-`;
-
-export const RadioInputsDiv = styled.div`
-    display: inline-flex;
-    overflow: hidden;
-    border-radius: 10px;
-    border: 1px solid black;
-`;
-
-export const RadioInput = styled.input`
-    display: none;
-`;
-
-export const RadioLabel = styled.label`
-    font-size: 14px;
-    height: 40px;
-    color: ${props => props.color};
-    background: ${props => props.background};
-    cursor: pointer;
-    transition: background 0.1s;
-    width: 110px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    :not(:last-of-type) {
-        border-right: 1px solid black;
-    }
 `;
 
 export const NumberInput = styled.input`
