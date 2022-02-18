@@ -95,6 +95,11 @@ export const ResetInput = styled.input`
     border: 1px solid black;
 `;
 
+export const ErrorMessage = styled.span`
+    color: red;
+`;
+
 export const NormalLabel = styled.label`
-    padding-bottom: 10px; 
+    padding-bottom: 10px;
+    color: ${props => props.color};
 `;

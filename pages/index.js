@@ -1,4 +1,4 @@
-import { MainContent, FormSection, FormElement, SubmitInput, ResetInput, NumberInput, NormalLabel } from "../src/styles/homepage";
+import { MainContent, FormSection, FormElement, SubmitInput, ResetInput, NumberInput, NormalLabel, ErrorMessage } from "../src/styles/homepage";
 import { useState } from "react";
 import { moneyMask } from "../src/utils/inputMasks";
 import ResultSection from "../src/components/resultSection";
@@ -10,6 +10,10 @@ const Home = ({ cdi, ipca }) => {
   const [indexingType, setIndexingType] = useState('pos');
   const [submitInputColor, setSubmitInputColor] = useState('#969696');
   const [simultationResult, setSimulationResult] = useState(null);
+  const [initialContribution, setInitialContribution] = useState(null);
+  const [monthlyContribution, setMonthlyContribution] = useState(null);
+  const [deadline, setDeadline] = useState(null);
+  const [profitability, setProfitability] = useState(null);
 
   const handleSubmit = (e) => {
     setSubmitInputColor("#ed8e53");
@@ -25,7 +29,24 @@ const Home = ({ cdi, ipca }) => {
     fetchData();
   };
 
-  if (simultationResult) console.log(simultationResult);
+  const ValidateNumberInput = (userInput, type) => {
+    let result = userInput;
+
+    if (result !== null) {
+      if (result.includes('%')) result = result.replaceAll('%', '');
+      if (result.includes('R$ ')) result = result.replace('R$ ', '');
+      if (result.includes('.')) result = result.replaceAll('.', '');
+      if (result.includes(',')) result = result.replace(',', '.');
+
+      if ((result !== '') && (!isNaN(result)) && (result > 0)) {
+        return { valid: true, isNumber: true, result: (type === 'porcentage') ? `${result}%`: moneyMask(result)};
+      };
+    };
+
+    if (result === null || result === '') return { valid: true, isNumber: false, result: userInput };
+
+    return { valid: false, isNumber: false, result: userInput };
+  };
 
   return (
     <MainContent>
@@ -37,20 +58,24 @@ const Home = ({ cdi, ipca }) => {
             <IncomeTypeSelector incomeType={incomeType} setIncomeType={setIncomeType} />
             <IndexingTypeSelector indexingType={indexingType} setIndexingType={setIndexingType} />
             <FormElement>
-              <NormalLabel>Aporte Inicial</NormalLabel>
-              <NumberInput type="text" id="initialContribution" onKeyDown={(e) => e.target.value = moneyMask(e.target.value)} />
+              <NormalLabel color={(ValidateNumberInput(initialContribution).valid) ? 'black' : 'red'}>Aporte Inicial</NormalLabel>
+              <NumberInput type="text" id="initialContribution" value={ValidateNumberInput(initialContribution).result} onChange={(e) => setInitialContribution(e.target.value)} />
+              <ErrorMessage><small>{(ValidateNumberInput(initialContribution).valid) ? '' : 'Aporte deve ser um número'}</small></ErrorMessage>
             </FormElement>
             <FormElement>
-              <NormalLabel>Aporte Mensal</NormalLabel>
-              <NumberInput type="text" id="monthlyContribution" onKeyDown={(e) => e.target.value = moneyMask(e.target.value)} />
+              <NormalLabel color={(ValidateNumberInput(monthlyContribution).valid) ? 'black' : 'red'}>Aporte Mensal</NormalLabel>
+              <NumberInput type="text" id="monthlyContribution" value={ValidateNumberInput(monthlyContribution).result} onChange={(e) => setMonthlyContribution(e.target.value)} />
+              <ErrorMessage><small>{(ValidateNumberInput(monthlyContribution).valid) ? '' : 'Aporte deve ser um número'}</small></ErrorMessage>
             </FormElement>
             <FormElement>
-              <NormalLabel>Prazo (em meses)</NormalLabel>
-              <NumberInput type="number" id="deadline" min="1" />
+              <NormalLabel color={(ValidateNumberInput(deadline).valid) ? 'black' : 'red'}>Prazo (em meses)</NormalLabel>
+              <NumberInput type="text" id="deadline" min="1" value={deadline} onChange={(e) => setDeadline(e.target.value)} />
+              <ErrorMessage><small>{(ValidateNumberInput(deadline).valid) ? '' : 'Prazo deve ser um número'}</small></ErrorMessage>
             </FormElement>
             <FormElement>
-              <NormalLabel>Rentabilidade</NormalLabel>
-              <NumberInput type="number" step="0.01" id="profitability" min="1" />
+              <NormalLabel color={(ValidateNumberInput(profitability).valid) ? 'black' : 'red'}>Rentabilidade</NormalLabel>
+              <NumberInput type="text" step="0.01" id="profitability" min="1" value={(ValidateNumberInput(profitability, 'porcentage').isNumber) ? ValidateNumberInput(profitability, 'porcentage').result : profitability} onChange={(e) => setProfitability(e.target.value)} />
+              <ErrorMessage><small>{(ValidateNumberInput(profitability).valid) ? '' : 'Rentabilidade deve ser um número'}</small></ErrorMessage>
             </FormElement>
             <FormElement>
               <NormalLabel>IPCA (ao ano)</NormalLabel>
@@ -60,7 +85,12 @@ const Home = ({ cdi, ipca }) => {
               <NormalLabel>CDI (ao ano)</NormalLabel>
               <NumberInput type="text" id="cdi" step="0.01" readOnly min="1" value={`${cdi[0].valor.toString()}%`} />
             </FormElement>
-            <ResetInput type="reset" value="Limpar os campos" />
+            <ResetInput type="reset" value="Limpar os campos" onClick={e => {
+              setInitialContribution(null);
+              setMonthlyContribution(null);
+              setDeadline(null);
+              setProfitability(null);
+            }}/>
             <SubmitInput type="submit" value="Simular" color={submitInputColor} />
           </form>
         </article>
