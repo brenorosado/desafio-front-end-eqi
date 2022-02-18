@@ -12,6 +12,6 @@ Criar um simulador de investimentos seguindo o wireframe fornecido https://githu
 - Styled-components
 - Cypress
 
-- Motivo da escolha da stack: 
-  Para otimizar o SEO da aplicação optei por desenvolve-lá utilizando o Next, framework para React, o html semanticamente.
-  Escolhi desenvolver o estilo da aplicação com styled-components por ter mais liberdade para criar componentes customizados e já ter familiaridade com a ferramenta.
+Motivo da escolha da stack: 
+Para otimizar o SEO da aplicação optei por desenvolve-lá utilizando o Next, framework para React, o html semanticamente.
+Escolhi desenvolver o estilo da aplicação com styled-components por ter mais liberdade para criar componentes customizados e já ter familiaridade com a ferramenta.

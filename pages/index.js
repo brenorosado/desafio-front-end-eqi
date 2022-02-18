@@ -79,11 +79,11 @@ const Home = ({ cdi, ipca }) => {
             </FormElement>
             <FormElement>
               <NormalLabel>IPCA (ao ano)</NormalLabel>
-              <NumberInput type="text" id="ipca" min="1" readOnly value={`${ipca[0].valor.toString()}%`} />
+              <NumberInput type="text" id="ipca" min="1" readOnly value={`${ipca[0].valor.toString().replace('.', ',')}%`} />
             </FormElement>
             <FormElement>
               <NormalLabel>CDI (ao ano)</NormalLabel>
-              <NumberInput type="text" id="cdi" step="0.01" readOnly min="1" value={`${cdi[0].valor.toString()}%`} />
+              <NumberInput type="text" id="cdi" step="0.01" readOnly min="1" value={`${cdi[0].valor.toString().replace('.', ',')}%`} />
             </FormElement>
             <ResetInput type="reset" value="Limpar os campos" onClick={e => {
               setInitialContribution(null);
