@@ -90,6 +90,8 @@ const Home = ({ cdi, ipca }) => {
               setMonthlyContribution(null);
               setDeadline(null);
               setProfitability(null);
+              setIncomeType('bruto');
+              setIndexingType('pos');
             }}/>
             <SubmitInput type="submit" value="Simular" color={submitInputColor} />
           </form>
